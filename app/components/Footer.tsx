@@ -26,11 +26,19 @@ export default function Footer() {
           </h3>
 
           <div className="flex flex-col gap-3 text-xs text-black/60">
+
             <a
               href="/about"
               className="transition hover:text-black"
             >
               About
+            </a>
+
+            <a
+              href="/shop"
+              className="transition hover:text-black"
+            >
+              Shop
             </a>
 
             <a
@@ -46,6 +54,7 @@ export default function Footer() {
             >
               Cart
             </a>
+
           </div>
         </div>
 

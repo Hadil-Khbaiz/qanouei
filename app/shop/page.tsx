@@ -25,15 +25,24 @@ export default function ShopPage() {
           </a>
 
           <nav className="flex items-center gap-8 text-sm">
-            <a href="/" className="transition hover:opacity-50">
+            <a
+              href="/"
+              className="transition hover:opacity-50"
+            >
               Home
             </a>
 
-            <a href="/shop" className="transition hover:opacity-50">
+            <a
+              href="/shop"
+              className="transition hover:opacity-50"
+            >
               Shop
             </a>
 
-            <a href="/account" className="transition hover:opacity-50">
+            <a
+              href="/account"
+              className="transition hover:opacity-50"
+            >
               Account
             </a>
 
@@ -77,28 +86,30 @@ export default function ShopPage() {
           >
             <div className="relative overflow-hidden rounded-[2rem] bg-[#E9E1D7]">
 
-              <div className="flex h-[320px] items-center justify-center px-6 py-16 text-center">
+              <div className="flex min-h-[380px] items-center justify-center px-6 py-8 text-center">
 
-                <div>
+                <div className="w-full">
 
+                  {/* LUNACURL Logo */}
                   <img
                     src="/lunacurl-logo.png"
                     alt="LUNACURL"
-                    className="mx-auto h-28 w-auto md:h-36"
+                    className="mx-auto h-36 w-auto object-contain sm:h-44 md:h-52"
                   />
 
-                  <p className="mt-6 text-xs uppercase tracking-[0.4em] text-zinc-500">
+                  {/* Text */}
+                  <p className="mt-2 text-[9px] uppercase tracking-[0.3em] text-zinc-500 sm:text-[10px]">
                     Beauty
                   </p>
 
-                  <p className="mx-auto mt-5 max-w-sm text-sm leading-6 text-zinc-600">
+                  <p className="mx-auto mt-3 max-w-xs text-[11px] leading-5 text-zinc-600 sm:text-xs">
                     Automatic styling, effortlessly.
                   </p>
 
-                  <div className="mt-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.3em]">
+                  <div className="mt-4 inline-flex items-center gap-3 text-[9px] uppercase tracking-[0.25em] sm:text-[10px]">
                     Discover LUNACURL
 
-                    <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="text-base transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
                   </div>
@@ -117,27 +128,29 @@ export default function ShopPage() {
       <section className="px-6 pb-24">
         <div className="mx-auto max-w-4xl">
 
-          <div className="relative overflow-hidden rounded-[2rem] bg-[#E1DCD4]">
+          <div className="relative overflow-hidden rounded-[2rem] bg-black">
 
-            <div className="flex min-h-[380px] items-center justify-center px-6 py-16 text-center">
+            <div className="flex min-h-[380px] items-center justify-center px-6 py-8 text-center">
 
-              <div>
+              <div className="w-full">
 
+                {/* VERONE Logo */}
                 <img
                   src="/verone-logo.jpeg"
                   alt="VERONE"
-                  className="mx-auto -translate-y-4 h-32 w-auto object-contain md:-translate-y-5 md:h-44"
+                  className="mx-auto -translate-y-2 h-48 w-auto scale-[2] object-contain sm:h-60 sm:scale-[2] md:-translate-y-3 md:h-72 md:scale-[2]"
                 />
 
-                <p className="mt-4 text-xs uppercase tracking-[0.4em] text-zinc-500">
+                {/* Text */}
+                <p className="mt-0 text-[9px] uppercase tracking-[0.3em] text-white/55 sm:text-[10px]">
                   Eyewear
                 </p>
 
-                <p className="mx-auto mt-5 max-w-sm text-sm leading-6 text-zinc-600">
+                <p className="mx-auto mt-3 max-w-xs text-[11px] leading-5 text-white/60 sm:text-xs">
                   Timeless eyewear, thoughtfully curated.
                 </p>
 
-                <p className="mt-6 text-xs uppercase tracking-[0.35em] text-zinc-400">
+                <p className="mt-4 text-[9px] uppercase tracking-[0.25em] text-white/35 sm:text-[10px]">
                   Coming Soon
                 </p>
 

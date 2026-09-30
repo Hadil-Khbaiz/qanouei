@@ -108,6 +108,7 @@ export default function AutoHairCurlerPage() {
                     src="/auto-hair-curler-video.mp4"
                     controls
                     playsInline
+                    muted
                     className="h-full w-full object-contain"
                   />
                 </div>
