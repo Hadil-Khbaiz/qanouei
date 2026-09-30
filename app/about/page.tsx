@@ -2,50 +2,6 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-
-          <a
-            href="/"
-            className="flex items-center gap-3"
-          >
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-12 w-auto"
-            />
-
-            <span className="text-2xl font-semibold tracking-[0.25em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <nav className="flex items-center gap-8 text-sm">
-            <a href="/" className="transition hover:opacity-50">
-              Home
-            </a>
-
-            <a href="/shop" className="transition hover:opacity-50">
-              Shop
-            </a>
-
-            <a href="/about" className="transition hover:opacity-50">
-              About
-            </a>
-
-            <a href="/account" className="transition hover:opacity-50">
-              Account
-            </a>
-
-            <a href="/cart" className="transition hover:opacity-50">
-              Cart
-            </a>
-          </nav>
-
-        </div>
-      </header>
-
       {/* About Content */}
       <section className="mx-auto max-w-4xl px-6 py-20">
 

@@ -1,40 +1,9 @@
 export default function ShippingPage() {
   return (
     <main className="min-h-screen bg-[#f8f5ef] text-[#171512]">
-      <header className="border-b border-black/10 px-6 py-5">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <a
-            href="/"
-            className="text-sm font-medium tracking-[0.3em]"
-          >
-            QANOUEI
-          </a>
-
-          <nav className="flex gap-6 text-xs uppercase tracking-[0.18em]">
-            <a href="/" className="transition hover:opacity-50">
-              Home
-            </a>
-
-            <a href="/shop" className="transition hover:opacity-50">
-              Shop
-            </a>
-
-            <a href="/about" className="transition hover:opacity-50">
-              About
-            </a>
-
-            <a href="/account" className="transition hover:opacity-50">
-              Account
-            </a>
-
-            <a href="/cart" className="transition hover:opacity-50">
-              Cart
-            </a>
-          </nav>
-        </div>
-      </header>
 
       <section className="mx-auto max-w-3xl px-6 py-20">
+
         <p className="mb-4 text-xs uppercase tracking-[0.3em] text-black/50">
           QANOUEI
         </p>
@@ -44,12 +13,14 @@ export default function ShippingPage() {
         </h1>
 
         <div className="mt-12 space-y-8 text-sm leading-7 text-black/70">
+
           <div>
             <h2 className="mb-2 font-medium text-[#171512]">
               Delivery Within Kuwait
             </h2>
 
             <ul className="list-disc space-y-1 pl-5">
+
               <li>
                 Delivery is available across all areas of Kuwait.
               </li>
@@ -61,8 +32,10 @@ export default function ShippingPage() {
               <li>
                 Orders are delivered within 24 hours.
               </li>
+
             </ul>
           </div>
+
 
           <div>
             <h2 className="mb-2 font-medium text-[#171512]">
@@ -76,6 +49,7 @@ export default function ShippingPage() {
             </p>
           </div>
 
+
           <div>
             <h2 className="mb-2 font-medium text-[#171512]">
               Contact
@@ -86,8 +60,11 @@ export default function ShippingPage() {
               contact details provided on our website.
             </p>
           </div>
+
         </div>
+
       </section>
+
     </main>
   );
 }

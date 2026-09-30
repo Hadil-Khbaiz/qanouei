@@ -22,118 +22,90 @@ export default function CheckoutPage() {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-  const loadUserEmail = async () => {
+    const loadUserEmail = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user?.email) {
+        setEmail(user.email);
+      }
+    };
+
+    loadUserEmail();
+  }, []);
+
+  const handleContinue = async () => {
+    setError("");
+    setSuccess("");
+
+    if (!fullName.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (!phone.trim()) {
+      setError("Please enter your phone number.");
+      return;
+    }
+
+    if (!/^[569][0-9]{7}$/.test(phone)) {
+      setError("Please enter a valid Kuwait mobile number.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!address.trim()) {
+      setError("Please enter your delivery address.");
+      return;
+    }
+
+    // Get the currently signed-in customer
     const {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (user?.email) {
-      setEmail(user.email);
+    if (!user) {
+      setError("Please sign in to your account before placing an order.");
+      return;
     }
+
+    const { error: insertError } = await supabase
+      .from("orders")
+      .insert({
+        user_id: user.id,
+        customer_name: fullName.trim(),
+        phone: `+965${phone}`,
+        email: email.trim(),
+        address: address.trim(),
+        notes: notes.trim(),
+        items: cart,
+        total: cartTotal,
+        status: "pending",
+      });
+
+    if (insertError) {
+      console.error(insertError);
+      setError(insertError.message);
+      return;
+    }
+
+    setSuccess(
+      "Your order has been received. Payment will be available soon."
+    );
   };
-
-  loadUserEmail();
-}, []);
-
-  const handleContinue = async () => {
-  setError("");
-  setSuccess("");
-
-  if (!fullName.trim()) {
-    setError("Please enter your full name.");
-    return;
-  }
-
-  if (!phone.trim()) {
-    setError("Please enter your phone number.");
-    return;
-  }
-
-  if (!/^[569][0-9]{7}$/.test(phone)) {
-    setError("Please enter a valid Kuwait mobile number.");
-    return;
-  }
-
-  if (!email.trim()) {
-    setError("Please enter your email address.");
-    return;
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    setError("Please enter a valid email address.");
-    return;
-  }
-
-  if (!address.trim()) {
-    setError("Please enter your delivery address.");
-    return;
-  }
-
-  // Get the currently signed-in customer
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    setError("Please sign in to your account before placing an order.");
-    return;
-  }
-
-  const { error: insertError } = await supabase
-    .from("orders")
-    .insert({
-      user_id: user.id,
-      customer_name: fullName.trim(),
-      phone: `+965${phone}`,
-      email: email.trim(),
-      address: address.trim(),
-      notes: notes.trim(),
-      items: cart,
-      total: cartTotal,
-      status: "pending",
-    });
-
-  if (insertError) {
-    console.error(insertError);
-    setError(insertError.message);
-    return;
-  }
-
-  setSuccess(
-    "Your order has been received. Payment will be available soon."
-  );
-};
-  
 
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
-
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-          <a href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-10 w-auto object-contain"
-            />
-
-            <span className="text-lg font-semibold tracking-[0.22em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <a
-            href="/cart"
-            className="text-xs uppercase tracking-[0.15em] transition-opacity hover:opacity-50"
-          >
-            ← Cart
-          </a>
-
-        </div>
-      </header>
-
 
       {/* Checkout */}
       <section className="mx-auto max-w-6xl px-6 pb-24 pt-14">
@@ -147,7 +119,6 @@ export default function CheckoutPage() {
             Checkout
           </h1>
         </div>
-
 
         <div className="grid gap-12 lg:grid-cols-[1fr_380px]">
 
@@ -176,7 +147,6 @@ export default function CheckoutPage() {
                     className="w-full border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
                   />
                 </div>
-
 
                 {/* Phone Number */}
                 <div>
@@ -216,7 +186,6 @@ export default function CheckoutPage() {
                     )}
                 </div>
 
-
                 {/* Email */}
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
@@ -231,7 +200,6 @@ export default function CheckoutPage() {
                     className="w-full border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
                   />
                 </div>
-
 
                 {/* Delivery Address */}
                 <div>
@@ -248,7 +216,6 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-
                 {/* Order Notes */}
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
@@ -264,14 +231,12 @@ export default function CheckoutPage() {
                   />
                 </div>
 
-
                 {/* Error */}
                 {error && (
                   <div className="border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-600">
                     {error}
                   </div>
                 )}
-
 
                 {/* Success */}
                 {success && (
@@ -285,7 +250,6 @@ export default function CheckoutPage() {
             </div>
 
           </div>
-
 
           {/* Order Summary */}
           <div className="h-fit border border-black/10 bg-white p-8">
@@ -323,7 +287,6 @@ export default function CheckoutPage() {
 
             </div>
 
-
             {/* Total */}
             <div className="mt-8 flex items-center justify-between border-t border-black/10 pt-6">
 
@@ -336,7 +299,6 @@ export default function CheckoutPage() {
               </span>
 
             </div>
-
 
             {/* Continue to Payment */}
             <button

@@ -155,43 +155,6 @@ export default function AccountPage() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-          <a href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-10 w-auto object-contain"
-            />
-
-            <span className="text-lg font-semibold tracking-[0.22em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <nav className="flex items-center gap-6 text-xs uppercase tracking-[0.15em]">
-
-            <a
-              href="/shop"
-              className="transition-opacity hover:opacity-50"
-            >
-              Shop
-            </a>
-
-            <a
-              href="/cart"
-              className="transition-opacity hover:opacity-50"
-            >
-              Cart
-            </a>
-
-          </nav>
-
-        </div>
-      </header>
-
       {/* Account */}
       <section className="mx-auto max-w-5xl px-6 pb-24 pt-16">
 
@@ -285,7 +248,6 @@ export default function AccountPage() {
                           : "Show password"
                       }
                     >
-
                       {showPassword ? (
                         <EyeOff
                           size={18}
@@ -297,7 +259,6 @@ export default function AccountPage() {
                           strokeWidth={1.5}
                         />
                       )}
-
                     </button>
 
                   </div>
@@ -306,7 +267,6 @@ export default function AccountPage() {
 
                 {/* Confirm Password */}
                 {isCreating && (
-
                   <div>
 
                     <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
@@ -345,7 +305,6 @@ export default function AccountPage() {
                             : "Show confirm password"
                         }
                       >
-
                         {showConfirmPassword ? (
                           <EyeOff
                             size={18}
@@ -357,13 +316,11 @@ export default function AccountPage() {
                             strokeWidth={1.5}
                           />
                         )}
-
                       </button>
 
                     </div>
 
                   </div>
-
                 )}
 
                 {/* Error */}
@@ -386,13 +343,11 @@ export default function AccountPage() {
                   disabled={loading}
                   className="w-full bg-[#171512] px-6 py-4 text-xs uppercase tracking-[0.25em] text-white transition-opacity hover:opacity-80 disabled:opacity-50"
                 >
-
                   {loading
                     ? "Please wait..."
                     : isCreating
                     ? "Create Account"
                     : "Sign In"}
-
                 </button>
 
               </form>
@@ -403,11 +358,9 @@ export default function AccountPage() {
                 onClick={switchMode}
                 className="mt-6 w-full text-xs text-zinc-500 transition-opacity hover:opacity-50"
               >
-
                 {isCreating
                   ? "Already have an account? Sign In"
                   : "Don't have an account? Create one"}
-
               </button>
 
             </div>

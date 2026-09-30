@@ -2,50 +2,6 @@ export default function LunaCurlPage() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-          <a
-            href="/"
-            className="flex items-center gap-3"
-          >
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-10 w-auto object-contain"
-            />
-
-            <span className="text-lg font-semibold tracking-[0.22em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <nav className="flex items-center gap-5 text-xs">
-            <a href="/" className="transition-opacity hover:opacity-50">
-              Home
-            </a>
-
-            <a href="/shop" className="transition-opacity hover:opacity-50">
-              Shop
-            </a>
-
-            <a href="/about" className="transition-opacity hover:opacity-50">
-              About
-            </a>
-
-            <a href="/account" className="transition-opacity hover:opacity-50">
-              Account
-            </a>
-
-            <a href="/cart" className="transition-opacity hover:opacity-50">
-              Cart
-            </a>
-          </nav>
-
-        </div>
-      </header>
-
       {/* Collection Intro */}
       <section className="mx-auto max-w-5xl px-6 pb-12 pt-16">
 
@@ -74,10 +30,12 @@ export default function LunaCurlPage() {
 
       </section>
 
+
       {/* Products */}
       <section className="mx-auto max-w-5xl px-6 pb-24">
 
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
+
 
           {/* Auto Hair Curler */}
           <a
@@ -96,6 +54,7 @@ export default function LunaCurlPage() {
                 />
 
               </div>
+
 
               <div className="border-t border-black/10 bg-[#F8F5F0] p-5">
 
@@ -120,6 +79,8 @@ export default function LunaCurlPage() {
             </div>
 
           </a>
+
+
 
           {/* Hair Straightener */}
           <div className="overflow-hidden rounded-md bg-[#E1DCD4]">
@@ -146,6 +107,9 @@ export default function LunaCurlPage() {
 
           </div>
 
+
+
+
           {/* Hair Dryer */}
           <div className="overflow-hidden rounded-md bg-[#E1DCD4]">
 
@@ -171,9 +135,11 @@ export default function LunaCurlPage() {
 
           </div>
 
+
         </div>
 
       </section>
+
 
     </main>
   );

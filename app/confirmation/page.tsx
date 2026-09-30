@@ -88,24 +88,9 @@ export default function ConfirmationPage() {
     return (
       <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-        <header className="border-b border-black/10">
-          <div className="mx-auto flex max-w-7xl items-center px-6 py-5">
-            <a href="/" className="flex items-center gap-3">
-              <img
-                src="/logo.jpeg"
-                alt="QANOUEI"
-                className="h-10 w-auto object-contain"
-              />
-
-              <span className="text-lg font-semibold tracking-[0.22em]">
-                QANOUEI
-              </span>
-            </a>
-          </div>
-        </header>
-
         <section className="flex min-h-[70vh] items-center justify-center px-6">
           <div className="text-center">
+
             <h1 className="text-3xl font-light">
               Order Not Found
             </h1>
@@ -120,6 +105,7 @@ export default function ConfirmationPage() {
             >
               Continue Shopping
             </a>
+
           </div>
         </section>
 
@@ -129,32 +115,6 @@ export default function ConfirmationPage() {
 
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
-
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-          <a href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-10 w-auto object-contain"
-            />
-
-            <span className="text-lg font-semibold tracking-[0.22em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <a
-            href="/shop"
-            className="text-xs uppercase tracking-[0.15em] transition-opacity hover:opacity-50"
-          >
-            Shop
-          </a>
-
-        </div>
-      </header>
 
       {/* Invoice */}
       <section className="mx-auto max-w-3xl px-6 py-16">
@@ -191,7 +151,7 @@ export default function ConfirmationPage() {
                 Invoice
               </p>
 
-              <p className="mt-3 text-sm break-all">
+              <p className="mt-3 break-all text-sm">
                 {order.id}
               </p>
             </div>
@@ -299,7 +259,7 @@ export default function ConfirmationPage() {
 
                     </div>
 
-                    <p className="text-sm whitespace-nowrap">
+                    <p className="whitespace-nowrap text-sm">
                       {(item.price * item.quantity).toFixed(3)} KD
                     </p>
 

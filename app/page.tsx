@@ -2,67 +2,6 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-6">
-
-          <a
-            href="/"
-            className="flex items-center justify-center gap-2 sm:justify-start sm:gap-3"
-          >
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI Logo"
-              className="h-10 w-auto sm:h-14"
-            />
-
-            <span className="text-xl font-semibold tracking-[0.18em] sm:text-2xl sm:tracking-[0.25em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <nav className="flex items-center justify-center gap-5 text-xs sm:gap-8 sm:text-sm">
-
-            <a
-              href="/"
-              className="whitespace-nowrap transition hover:opacity-50"
-            >
-              Home
-            </a>
-
-            <a
-              href="/shop"
-              className="whitespace-nowrap transition hover:opacity-50"
-            >
-              Shop
-            </a>
-
-            <a
-              href="/about"
-              className="whitespace-nowrap transition hover:opacity-50"
-            >
-              About
-            </a>
-
-            <a
-              href="/account"
-              className="whitespace-nowrap transition hover:opacity-50"
-            >
-              Account
-            </a>
-
-            <a
-              href="/cart"
-              className="whitespace-nowrap transition hover:opacity-50"
-            >
-              Cart
-            </a>
-
-          </nav>
-
-        </div>
-      </header>
-
       {/* Hero */}
       <section className="relative px-4 pt-6 sm:px-6 sm:pt-10">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] sm:rounded-[2rem]">

@@ -15,66 +15,6 @@ export default function CartPage() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
-      {/* Header */}
-      <header className="border-b border-black/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-
-          <a href="/" className="flex items-center gap-3">
-            <img
-              src="/logo.jpeg"
-              alt="QANOUEI"
-              className="h-10 w-auto object-contain"
-            />
-
-            <span className="text-lg font-semibold tracking-[0.22em]">
-              QANOUEI
-            </span>
-          </a>
-
-          <nav className="flex items-center gap-5 text-xs">
-
-            <a
-              href="/"
-              className="transition-opacity hover:opacity-50"
-            >
-              Home
-            </a>
-
-            <a
-              href="/shop"
-              className="transition-opacity hover:opacity-50"
-            >
-              Shop
-            </a>
-
-            <a
-              href="/about"
-              className="transition-opacity hover:opacity-50"
-            >
-              About
-            </a>
-
-            <a
-              href="/account"
-              className="transition-opacity hover:opacity-50"
-            >
-              Account
-            </a>
-
-            <a
-              href="/cart"
-              className="flex items-center gap-1 transition-opacity hover:opacity-50"
-            >
-              <ShoppingBag size={13} strokeWidth={1.5} />
-              Cart ({cart.reduce((total, item) => total + item.quantity, 0)})
-            </a>
-
-          </nav>
-
-        </div>
-      </header>
-
-
       {/* Cart */}
       <section className="mx-auto max-w-6xl px-6 pb-24 pt-14">
 
@@ -87,7 +27,6 @@ export default function CartPage() {
             Your Cart
           </h1>
         </div>
-
 
         {cart.length === 0 ? (
 
@@ -145,7 +84,6 @@ export default function CartPage() {
 
                     </div>
 
-
                     {/* Quantity + total + remove */}
                     <div className="flex items-center justify-between gap-6 sm:justify-end">
 
@@ -191,11 +129,9 @@ export default function CartPage() {
 
                       </div>
 
-
                       <p className="min-w-[85px] text-right text-sm">
                         {(item.price * item.quantity).toFixed(3)} KD
                       </p>
-
 
                       <button
                         type="button"
@@ -217,7 +153,6 @@ export default function CartPage() {
 
               </div>
 
-
               {/* Continue Shopping */}
               <a
                 href="/shop"
@@ -227,7 +162,6 @@ export default function CartPage() {
               </a>
 
             </div>
-
 
             {/* Order Summary */}
             <div className="h-fit border border-black/10 bg-white p-8">
@@ -252,7 +186,6 @@ export default function CartPage() {
 
               </div>
 
-
               <div className="mt-6 flex items-center justify-between border-t border-black/10 pt-6">
 
                 <span className="text-sm">
@@ -264,7 +197,6 @@ export default function CartPage() {
                 </span>
 
               </div>
-
 
               {/* Checkout */}
               <a
