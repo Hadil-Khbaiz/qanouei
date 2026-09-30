@@ -5,8 +5,6 @@ import {
   Plus,
   Trash2,
   ShoppingBag,
-  Phone,
-  Mail,
 } from "lucide-react";
 
 import { useCart } from "../context/CartContext";
@@ -34,6 +32,7 @@ export default function CartPage() {
           </a>
 
           <nav className="flex items-center gap-5 text-xs">
+
             <a
               href="/"
               className="transition-opacity hover:opacity-50"
@@ -55,12 +54,13 @@ export default function CartPage() {
               About
             </a>
 
-           <a
-  href="/account"
-  className="transition-opacity hover:opacity-50"
->
-  Account
-</a>
+            <a
+              href="/account"
+              className="transition-opacity hover:opacity-50"
+            >
+              Account
+            </a>
+
             <a
               href="/cart"
               className="flex items-center gap-1 transition-opacity hover:opacity-50"
@@ -68,6 +68,7 @@ export default function CartPage() {
               <ShoppingBag size={13} strokeWidth={1.5} />
               Cart ({cart.reduce((total, item) => total + item.quantity, 0)})
             </a>
+
           </nav>
 
         </div>
@@ -90,30 +91,30 @@ export default function CartPage() {
 
         {cart.length === 0 ? (
 
-  <div className="border-t border-black/10 py-28 text-center">
+          <div className="border-t border-black/10 py-28 text-center">
 
-    <ShoppingBag
-      size={32}
-      strokeWidth={1}
-      className="mx-auto text-zinc-400"
-    />
+            <ShoppingBag
+              size={32}
+              strokeWidth={1}
+              className="mx-auto text-zinc-400"
+            />
 
-    <h2 className="mt-6 text-2xl font-light">
-      Your cart is empty
-    </h2>
+            <h2 className="mt-6 text-2xl font-light">
+              Your cart is empty
+            </h2>
 
-    <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-zinc-500">
-      Discover our curated collection of beauty, fashion, and lifestyle.
-    </p>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-zinc-500">
+              Discover our curated collection of beauty, fashion, and lifestyle.
+            </p>
 
-    <a
-      href="/shop"
-      className="mt-8 inline-block bg-[#171512] px-8 py-4 text-xs uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-80"
-    >
-      Discover Collection
-    </a>
+            <a
+              href="/shop"
+              className="mt-8 inline-block bg-[#171512] px-8 py-4 text-xs uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-80"
+            >
+              Discover Collection
+            </a>
 
-  </div>
+          </div>
 
         ) : (
 
@@ -133,6 +134,7 @@ export default function CartPage() {
 
                     {/* Product name */}
                     <div>
+
                       <h2 className="text-lg font-medium">
                         {item.name}
                       </h2>
@@ -140,6 +142,7 @@ export default function CartPage() {
                       <p className="mt-2 text-sm text-zinc-500">
                         {item.price.toFixed(3)} KD
                       </p>
+
                     </div>
 
 
@@ -233,10 +236,10 @@ export default function CartPage() {
                 Order Summary
               </p>
 
-
               <div className="mt-8 space-y-4 text-sm">
 
                 <div className="flex items-center justify-between">
+
                   <span className="text-zinc-500">
                     Subtotal
                   </span>
@@ -244,6 +247,7 @@ export default function CartPage() {
                   <span>
                     {cartTotal.toFixed(3)} KD
                   </span>
+
                 </div>
 
               </div>
@@ -277,86 +281,6 @@ export default function CartPage() {
         )}
 
       </section>
-
-
-      {/* Footer */}
-      <footer className="border-t border-black/10 px-6 py-12">
-  <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
-    <div>
-      <p className="text-lg font-semibold tracking-[0.25em]">
-        QANOUEI
-      </p>
-
-      <p className="mt-3 text-sm text-zinc-500">
-        Beauty, fashion & lifestyle.
-      </p>
-    </div>
-
-    <div className="flex flex-col gap-4 text-sm text-zinc-600">
-
-      {/* Phone numbers */}
-      <div className="flex flex-col gap-3">
-
-        <a
-          href="tel:+96567711085"
-          className="flex items-center gap-3 transition-opacity hover:opacity-50"
-        >
-          <Phone size={16} strokeWidth={1.5} />
-          <span>+965 67711085</span>
-        </a>
-
-        <a
-          href="tel:+96565817656"
-          className="flex items-center gap-3 transition-opacity hover:opacity-50"
-        >
-          <Phone size={16} strokeWidth={1.5} />
-          <span>+965 65817656</span>
-        </a>
-
-      </div>
-
-      {/* Email */}
-      <a
-        href="mailto:Qanouei.g.t@gmail.com"
-        className="flex items-center gap-3 transition-opacity hover:opacity-50"
-      >
-        <Mail size={16} strokeWidth={1.5} />
-        <span>Qanouei.g.t@gmail.com</span>
-      </a>
-
-      {/* Social media */}
-      <div className="mt-2 flex gap-6">
-
-        <a
-          href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 transition-opacity hover:opacity-50"
-        >
-          <span className="text-base">◎</span>
-          <span>Instagram</span>
-        </a>
-
-        <a
-          href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 transition-opacity hover:opacity-50"
-        >
-          <span className="text-base">♪</span>
-          <span>TikTok</span>
-        </a>
-
-      </div>
-
-    </div>
-  </div>
-
-  <div className="mx-auto mt-10 max-w-7xl border-t border-black/10 pt-6 text-xs text-zinc-400">
-    © 2026 QANOUEI. All rights reserved.
-  </div>
-</footer>
 
     </main>
   );

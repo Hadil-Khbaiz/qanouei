@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useCart } from "../../../context/CartContext";
 
 import {
-  Phone,
-  Mail,
   ShoppingBag,
   ChevronLeft,
   ChevronRight,
@@ -57,24 +55,23 @@ export default function AutoHairCurlerPage() {
             </a>
 
             <a
-  href="/account"
-  className="transition-opacity hover:opacity-50"
->
-  Account
-</a>
+              href="/account"
+              className="transition-opacity hover:opacity-50"
+            >
+              Account
+            </a>
 
             <a
-  href="/cart"
-  className="flex items-center gap-1 transition-opacity hover:opacity-50"
->
-  <ShoppingBag size={13} strokeWidth={1.5} />
-  Cart ({cartCount})
-</a>
+              href="/cart"
+              className="flex items-center gap-1 transition-opacity hover:opacity-50"
+            >
+              <ShoppingBag size={13} strokeWidth={1.5} />
+              Cart ({cartCount})
+            </a>
           </nav>
 
         </div>
       </header>
-
 
       {/* Product */}
       <section className="mx-auto max-w-6xl px-6 pb-24 pt-12">
@@ -86,9 +83,7 @@ export default function AutoHairCurlerPage() {
           ← Back to LUNACURL
         </a>
 
-
         <div className="mt-10 grid gap-12 md:grid-cols-2">
-
 
           {/* Product Media Gallery */}
           <div>
@@ -106,7 +101,6 @@ export default function AutoHairCurlerPage() {
                 </div>
               )}
 
-
               {/* Video */}
               {mediaIndex === 1 && (
                 <div className="flex h-[520px] items-center justify-center bg-black">
@@ -119,7 +113,6 @@ export default function AutoHairCurlerPage() {
                 </div>
               )}
 
-
               {/* Left Arrow */}
               <button
                 type="button"
@@ -129,7 +122,6 @@ export default function AutoHairCurlerPage() {
               >
                 <ChevronLeft size={20} strokeWidth={1.5} />
               </button>
-
 
               {/* Right Arrow */}
               <button
@@ -143,9 +135,9 @@ export default function AutoHairCurlerPage() {
 
             </div>
 
-
             {/* Media Indicator */}
             <div className="mt-4 flex justify-center gap-2">
+
               <button
                 type="button"
                 onClick={() => setMediaIndex(0)}
@@ -163,10 +155,10 @@ export default function AutoHairCurlerPage() {
                 }`}
                 aria-label="Show product video"
               />
+
             </div>
 
           </div>
-
 
           {/* Product Information */}
           <div className="flex flex-col justify-center">
@@ -176,7 +168,7 @@ export default function AutoHairCurlerPage() {
             </p>
 
             <h1 className="mt-4 text-4xl font-medium tracking-[-0.03em] md:text-5xl">
-               LUNACURL Auto Hair Curler
+              LUNACURL Auto Hair Curler
             </h1>
 
             <p className="mt-3 text-xs uppercase tracking-[0.25em] text-zinc-400">
@@ -187,7 +179,6 @@ export default function AutoHairCurlerPage() {
               15.500 KD
             </p>
 
-
             {/* Description */}
             <div className="mt-8 border-t border-black/10 pt-7">
 
@@ -197,7 +188,6 @@ export default function AutoHairCurlerPage() {
               </p>
 
             </div>
-
 
             {/* Product Details */}
             <div className="mt-8 border-t border-black/10 pt-7">
@@ -233,7 +223,7 @@ export default function AutoHairCurlerPage() {
                   <span>110–240V</span>
                 </div>
 
-                <div className="flex justify-between gap-6 border-b border-black/5 pb-3">
+                <div className="flex justify-between gap-6 border-b border-black/10 pb-3">
                   <span className="text-zinc-500">Frequency</span>
                   <span>50–60Hz</span>
                 </div>
@@ -271,37 +261,34 @@ export default function AutoHairCurlerPage() {
 
             </div>
 
-
             {/* Add to Cart */}
-<button
-  type="button"
-  onClick={() => {
-    addToCart({
-      id: "lunacurl-auto-hair-curler",
-      name: "LUNACURL Auto Hair Curler",
-      price: 15.5,
-    });
+            <button
+              type="button"
+              onClick={() => {
+                addToCart({
+                  id: "lunacurl-auto-hair-curler",
+                  name: "LUNACURL Auto Hair Curler",
+                  price: 15.5,
+                });
 
-    setAddedToCart(true);
+                setAddedToCart(true);
 
-    setTimeout(() => {
-      setAddedToCart(false);
-    }, 1800);
-  }}
-  className={`mt-8 w-full px-6 py-4 text-xs uppercase tracking-[0.25em] text-white transition-all ${
-    addedToCart
-      ? "bg-[#6f7a63]"
-      : "bg-[#171512] hover:opacity-80"
-  }`}
->
-  {addedToCart ? "Added to Cart ✓" : "Add to Cart"}
-</button>
-
+                setTimeout(() => {
+                  setAddedToCart(false);
+                }, 1800);
+              }}
+              className={`mt-8 w-full px-6 py-4 text-xs uppercase tracking-[0.25em] text-white transition-all ${
+                addedToCart
+                  ? "bg-[#6f7a63]"
+                  : "bg-[#171512] hover:opacity-80"
+              }`}
+            >
+              {addedToCart ? "Added to Cart ✓" : "Add to Cart"}
+            </button>
 
           </div>
 
         </div>
-
 
         {/* Tips & Safety */}
         <div className="mt-20 max-w-3xl border-t border-black/10 pt-10">
@@ -344,78 +331,6 @@ export default function AutoHairCurlerPage() {
         </div>
 
       </section>
-
-
-      {/* Footer */}
-      <footer className="border-t border-black/10 px-6 py-10">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-end md:justify-between">
-
-          <div>
-            <p className="text-base font-semibold tracking-[0.22em]">
-              QANOUEI
-            </p>
-
-            <p className="mt-2 text-xs text-zinc-500">
-              Beauty, fashion & lifestyle.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 text-xs text-zinc-600">
-
-            <a
-              href="tel:+96567711085"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Phone size={13} strokeWidth={1.5} />
-              <span>+965 67711085</span>
-            </a>
-
-            <a
-              href="tel:+96565817656"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Phone size={13} strokeWidth={1.5} />
-              <span>+965 65817656</span>
-            </a>
-
-            <a
-              href="mailto:Qanouei.g.t@gmail.com"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Mail size={13} strokeWidth={1.5} />
-              <span>Qanouei.g.t@gmail.com</span>
-            </a>
-
-            <div className="mt-1 flex gap-5">
-
-              <a
-                href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">◎</span>
-                <span>Instagram</span>
-              </a>
-
-              <a
-                href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">♪</span>
-                <span>TikTok</span>
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </footer>
 
     </main>
   );

@@ -1,4 +1,4 @@
-import { Phone, Mail, User } from "lucide-react";
+import { User } from "lucide-react";
 
 export default function AccountPage() {
   return (
@@ -39,7 +39,6 @@ export default function AccountPage() {
         </div>
       </header>
 
-
       {/* Account */}
       <section className="mx-auto max-w-5xl px-6 pb-24 pt-16">
 
@@ -56,7 +55,6 @@ export default function AccountPage() {
             Sign in to view your orders and manage your account.
           </p>
         </div>
-
 
         <div className="grid gap-8 md:grid-cols-2">
 
@@ -85,7 +83,6 @@ export default function AccountPage() {
                 />
               </div>
 
-
               <div>
                 <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
                   Password
@@ -97,7 +94,6 @@ export default function AccountPage() {
                   className="w-full border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
                 />
               </div>
-
 
               <button
                 type="button"
@@ -116,7 +112,6 @@ export default function AccountPage() {
             </div>
 
           </div>
-
 
           {/* Create Account */}
           <div className="border border-black/10 bg-white p-8 md:p-10">
@@ -141,7 +136,6 @@ export default function AccountPage() {
 
         </div>
 
-
         {/* Orders */}
         <div className="mt-12 border border-black/10 bg-white p-8 md:p-10">
 
@@ -156,90 +150,6 @@ export default function AccountPage() {
         </div>
 
       </section>
-
-
-      {/* Footer */}
-      <footer className="border-t border-black/10 px-6 py-12">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
-          <div>
-            <p className="text-lg font-semibold tracking-[0.25em]">
-              QANOUEI
-            </p>
-
-            <p className="mt-3 text-sm text-zinc-500">
-              Beauty, fashion & lifestyle.
-            </p>
-          </div>
-
-
-          <div className="flex flex-col gap-4 text-sm text-zinc-600">
-
-            <div className="flex flex-col gap-3">
-
-              <a
-                href="tel:+96567711085"
-                className="flex items-center gap-3 transition-opacity hover:opacity-50"
-              >
-                <Phone size={16} strokeWidth={1.5} />
-                <span>+965 67711085</span>
-              </a>
-
-              <a
-                href="tel:+96565817656"
-                className="flex items-center gap-3 transition-opacity hover:opacity-50"
-              >
-                <Phone size={16} strokeWidth={1.5} />
-                <span>+965 65817656</span>
-              </a>
-
-            </div>
-
-
-            <a
-              href="mailto:Qanouei.g.t@gmail.com"
-              className="flex items-center gap-3 transition-opacity hover:opacity-50"
-            >
-              <Mail size={16} strokeWidth={1.5} />
-              <span>Qanouei.g.t@gmail.com</span>
-            </a>
-
-
-            <div className="mt-2 flex gap-6">
-
-              <a
-                href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">◎</span>
-                <span>Instagram</span>
-              </a>
-
-              <a
-                href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">♪</span>
-                <span>TikTok</span>
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div className="mx-auto mt-10 max-w-7xl border-t border-black/10 pt-6 text-xs text-zinc-400">
-          © 2026 QANOUEI. All rights reserved.
-        </div>
-
-      </footer>
 
     </main>
   );

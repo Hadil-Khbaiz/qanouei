@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 
 export default function ShopPage() {
   const { cartCount } = useCart();
+
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
 
@@ -24,30 +25,28 @@ export default function ShopPage() {
           </a>
 
           <nav className="flex items-center gap-8 text-sm">
-  <a href="/" className="transition hover:opacity-50">
-    Home
-  </a>
+            <a href="/" className="transition hover:opacity-50">
+              Home
+            </a>
 
-  <a href="/shop" className="transition hover:opacity-50">
-    Shop
-  </a>
+            <a href="/shop" className="transition hover:opacity-50">
+              Shop
+            </a>
 
-  <a href="/account" className="transition hover:opacity-50">
-    Account
-  </a>
+            <a href="/account" className="transition hover:opacity-50">
+              Account
+            </a>
 
-  <a
-  href="/cart"
-  className="transition hover:opacity-50"
->
-  Cart ({cartCount})
-</a>
-
-</nav>
+            <a
+              href="/cart"
+              className="transition hover:opacity-50"
+            >
+              Cart ({cartCount})
+            </a>
+          </nav>
 
         </div>
       </header>
-
 
       {/* Intro */}
       <section className="px-6 pt-24 pb-16">
@@ -68,10 +67,8 @@ export default function ShopPage() {
         </div>
       </section>
 
-
       {/* LUNACURL */}
       <section className="px-6 pb-20">
-
         <div className="mx-auto max-w-4xl">
 
           <a
@@ -81,7 +78,7 @@ export default function ShopPage() {
             <div className="relative overflow-hidden rounded-[2rem] bg-[#E9E1D7]">
 
               <div className="flex h-[320px] items-center justify-center px-6 py-16 text-center">
-              
+
                 <div>
 
                   <img
@@ -100,6 +97,7 @@ export default function ShopPage() {
 
                   <div className="mt-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.3em]">
                     Discover LUNACURL
+
                     <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
@@ -110,23 +108,19 @@ export default function ShopPage() {
               </div>
 
             </div>
-
           </a>
 
         </div>
-
       </section>
-
 
       {/* VERONE */}
       <section className="px-6 pb-24">
-
         <div className="mx-auto max-w-4xl">
 
           <div className="relative overflow-hidden rounded-[2rem] bg-[#E1DCD4]">
 
             <div className="flex h-[320px] items-center justify-center px-6 py-16 text-center">
-            
+
               <div>
 
                 <p className="text-xs uppercase tracking-[0.4em] text-zinc-500">
@@ -139,7 +133,7 @@ export default function ShopPage() {
 
                 <p className="mx-auto mt-5 max-w-sm text-sm leading-6 text-zinc-600">
                   Timeless eyewear, thoughtfully curated.
-                 </p>  
+                </p>
 
                 <p className="mt-6 text-xs uppercase tracking-[0.35em] text-zinc-400">
                   Coming Soon
@@ -152,88 +146,7 @@ export default function ShopPage() {
           </div>
 
         </div>
-
       </section>
-
-
-{/* Footer */}
-<footer className="border-t border-black/10 px-6 py-12">
-
-  <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
-    <div>
-      <p className="text-lg font-semibold tracking-[0.25em]">
-        QANOUEI
-      </p>
-
-      <p className="mt-3 text-sm text-zinc-500">
-        Beauty, fashion & lifestyle.
-      </p>
-    </div>
-
-    <div className="flex flex-col gap-4 text-sm text-zinc-600">
-
-      <div className="flex flex-col gap-3">
-
-        <a
-          href="tel:+96567711085"
-          className="flex items-center gap-3 transition-opacity hover:opacity-50"
-        >
-          <span>☎</span>
-          <span>+965 67711085</span>
-        </a>
-
-        <a
-          href="tel:+96565817656"
-          className="flex items-center gap-3 transition-opacity hover:opacity-50"
-        >
-          <span>☎</span>
-          <span>+965 65817656</span>
-        </a>
-
-      </div>
-
-      <a
-        href="mailto:Qanouei.g.t@gmail.com"
-        className="flex items-center gap-3 transition-opacity hover:opacity-50"
-      >
-        <span>✉</span>
-        <span>Qanouei.g.t@gmail.com</span>
-      </a>
-
-      <div className="mt-2 flex gap-6">
-
-        <a
-          href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 transition-opacity hover:opacity-50"
-        >
-          <span className="text-base">◎</span>
-          <span>Instagram</span>
-        </a>
-
-        <a
-          href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 transition-opacity hover:opacity-50"
-        >
-          <span className="text-base">♪</span>
-          <span>TikTok</span>
-        </a>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div className="mx-auto mt-10 max-w-7xl border-t border-black/10 pt-6 text-xs text-zinc-400">
-    © 2026 QANOUEI. All rights reserved.
-  </div>
-
-</footer>
 
     </main>
   );

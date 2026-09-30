@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "./context/CartContext";
+import Footer from "./components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-title: "QANOUEI",
-description: "Beauty, fashion & lifestyle.",
+  title: "QANOUEI",
+  description: "Beauty, fashion & lifestyle.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -25,11 +26,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-  <CartProvider>
-    {children}
-  </CartProvider>
-</body>
-
+        <CartProvider>
+          {children}
+          <Footer />
+        </CartProvider>
+      </body>
     </html>
   );
 }

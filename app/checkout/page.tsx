@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Phone, Mail } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function CheckoutPage() {
   const { cart, cartTotal, isLoaded } = useCart();
 
   useEffect(() => {
-  if (isLoaded && cart.length === 0) {
-    window.location.href = "/cart";
-  }
-}, [isLoaded, cart]);
+    if (isLoaded && cart.length === 0) {
+      window.location.href = "/cart";
+    }
+  }, [isLoaded, cart]);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -22,10 +21,10 @@ export default function CheckoutPage() {
   const [success, setSuccess] = useState("");
 
   const handleContinue = () => {
-  setError("");
-  setSuccess("");
+    setError("");
+    setSuccess("");
 
-  if (!fullName.trim()) {
+    if (!fullName.trim()) {
       setError("Please enter your full name.");
       return;
     }
@@ -50,37 +49,39 @@ export default function CheckoutPage() {
       return;
     }
 
-   if (!address.trim()) {
-  setError("Please enter your delivery address.");
-  return;
-}
+    if (!address.trim()) {
+      setError("Please enter your delivery address.");
+      return;
+    }
 
-const orderId = `QN-${new Date()
-  .toISOString()
-  .slice(0, 10)
-  .replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const orderId = `QN-${new Date()
+      .toISOString()
+      .slice(0, 10)
+      .replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-const orderData = {
-  orderId,
-  customer: {
-    fullName: fullName.trim(),
-    phone: `+965${phone}`,
-    email: email.trim(),
-    address: address.trim(),
-    notes: notes.trim(),
-  },
-  items: cart,
-  total: cartTotal,
-  status: "pending_payment",
-  createdAt: new Date().toISOString(),
-};
+    const orderData = {
+      orderId,
+      customer: {
+        fullName: fullName.trim(),
+        phone: `+965${phone}`,
+        email: email.trim(),
+        address: address.trim(),
+        notes: notes.trim(),
+      },
+      items: cart,
+      total: cartTotal,
+      status: "pending_payment",
+      createdAt: new Date().toISOString(),
+    };
 
-localStorage.setItem("qanouei-pending-order", JSON.stringify(orderData));
+    localStorage.setItem(
+      "qanouei-pending-order",
+      JSON.stringify(orderData)
+    );
 
-setSuccess(
-  `Your order ${orderId} is ready. Payment will be available soon.`
-);
-
+    setSuccess(
+      `Your order ${orderId} is ready. Payment will be available soon.`
+    );
   };
 
   return (
@@ -186,11 +187,12 @@ setSuccess(
 
                   </div>
 
-                  {phone.length > 0 && !/^[569][0-9]{7}$/.test(phone) && (
-  <p className="mt-2 text-xs text-red-500">
-    Enter 8 digits. Kuwait delivery only.
-  </p>
-)}
+                  {phone.length > 0 &&
+                    !/^[569][0-9]{7}$/.test(phone) && (
+                      <p className="mt-2 text-xs text-red-500">
+                        Enter 8 digits. Kuwait delivery only.
+                      </p>
+                    )}
                 </div>
 
 
@@ -242,18 +244,20 @@ setSuccess(
                 </div>
 
 
-                {/* Message */}
+                {/* Error */}
                 {error && (
-  <div className="border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-600">
-    {error}
-  </div>
-)}
+                  <div className="border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-600">
+                    {error}
+                  </div>
+                )}
 
-{success && (
-  <div className="border border-green-200 bg-green-50 px-4 py-4 text-sm text-green-700">
-    {success}
-  </div>
-)}
+
+                {/* Success */}
+                {success && (
+                  <div className="border border-green-200 bg-green-50 px-4 py-4 text-sm text-green-700">
+                    {success}
+                  </div>
+                )}
 
               </div>
 
@@ -268,7 +272,6 @@ setSuccess(
             <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
               Your Order
             </p>
-
 
             <div className="mt-8 space-y-5">
 
@@ -328,93 +331,6 @@ setSuccess(
         </div>
 
       </section>
-
-
-      {/* Footer */}
-      <footer className="border-t border-black/10 px-6 py-12">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
-          <div>
-            <p className="text-lg font-semibold tracking-[0.25em]">
-              QANOUEI
-            </p>
-
-            <p className="mt-3 text-sm text-zinc-500">
-              Beauty, fashion & lifestyle.
-            </p>
-          </div>
-
-
-          <div className="flex flex-col gap-4 text-sm text-zinc-600">
-
-            {/* Phone Numbers */}
-            <div className="flex flex-col gap-3">
-
-              <a
-                href="tel:+96567711085"
-                className="flex items-center gap-3 transition-opacity hover:opacity-50"
-              >
-                <Phone size={16} strokeWidth={1.5} />
-                <span>+965 67711085</span>
-              </a>
-
-              <a
-                href="tel:+96565817656"
-                className="flex items-center gap-3 transition-opacity hover:opacity-50"
-              >
-                <Phone size={16} strokeWidth={1.5} />
-                <span>+965 65817656</span>
-              </a>
-
-            </div>
-
-
-            {/* Email */}
-            <a
-              href="mailto:Qanouei.g.t@gmail.com"
-              className="flex items-center gap-3 transition-opacity hover:opacity-50"
-            >
-              <Mail size={16} strokeWidth={1.5} />
-              <span>Qanouei.g.t@gmail.com</span>
-            </a>
-
-
-            {/* Social Media */}
-            <div className="mt-2 flex gap-6">
-
-              <a
-                href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">◎</span>
-                <span>Instagram</span>
-              </a>
-
-              <a
-                href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 transition-opacity hover:opacity-50"
-              >
-                <span className="text-base">♪</span>
-                <span>TikTok</span>
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div className="mx-auto mt-10 max-w-7xl border-t border-black/10 pt-6 text-xs text-zinc-400">
-          © 2026 QANOUEI. All rights reserved.
-        </div>
-
-      </footer>
 
     </main>
   );

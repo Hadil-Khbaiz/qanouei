@@ -1,5 +1,3 @@
-import { Phone, Mail } from "lucide-react";
-
 export default function LunaCurlPage() {
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
@@ -37,17 +35,16 @@ export default function LunaCurlPage() {
             </a>
 
             <a href="/account" className="transition-opacity hover:opacity-50">
-  Account
-</a>
+              Account
+            </a>
 
-<a href="/cart" className="transition-opacity hover:opacity-50">
-  Cart
-</a>
+            <a href="/cart" className="transition-opacity hover:opacity-50">
+              Cart
+            </a>
           </nav>
 
         </div>
       </header>
-
 
       {/* Collection Intro */}
       <section className="mx-auto max-w-5xl px-6 pb-12 pt-16">
@@ -77,12 +74,10 @@ export default function LunaCurlPage() {
 
       </section>
 
-
       {/* Products */}
       <section className="mx-auto max-w-5xl px-6 pb-24">
 
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-3">
-
 
           {/* Auto Hair Curler */}
           <a
@@ -126,7 +121,6 @@ export default function LunaCurlPage() {
 
           </a>
 
-
           {/* Hair Straightener */}
           <div className="overflow-hidden rounded-md bg-[#E1DCD4]">
 
@@ -151,7 +145,6 @@ export default function LunaCurlPage() {
             </div>
 
           </div>
-
 
           {/* Hair Dryer */}
           <div className="overflow-hidden rounded-md bg-[#E1DCD4]">
@@ -178,80 +171,9 @@ export default function LunaCurlPage() {
 
           </div>
 
-
         </div>
 
       </section>
-
-
-      {/* Footer */}
-      <footer className="border-t border-black/10 px-6 py-10">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-end md:justify-between">
-
-          <div>
-            <p className="text-base font-semibold tracking-[0.22em]">
-              QANOUEI
-            </p>
-
-            <p className="mt-2 text-xs text-zinc-500">
-              Beauty, fashion & lifestyle.
-            </p>
-          </div>
-
-
-                   <div className="flex flex-col gap-3 text-xs text-zinc-600">
-
-            <a
-              href="tel:+96567711085"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Phone size={13} strokeWidth={1.5} />
-              <span>+965 67711085</span>
-            </a>
-
-            <a
-              href="tel:+96565817656"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Phone size={13} strokeWidth={1.5} />
-              <span>+965 65817656</span>
-            </a>
-
-            <a
-              href="mailto:Qanouei.g.t@gmail.com"
-              className="flex items-center gap-2 transition-opacity hover:opacity-50"
-            >
-              <Mail size={13} strokeWidth={1.5} />
-              <span>Qanouei.g.t@gmail.com</span>
-            </a>
-
-            <div className="mt-1 flex gap-5">
-  <a
-    href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center gap-2 transition-opacity hover:opacity-50"
-  >
-    <span className="text-base">◎</span>
-    <span>Instagram</span>
-  </a>
-
-  <a
-    href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex items-center gap-2 transition-opacity hover:opacity-50"
-  >
-    <span className="text-base">♪</span>
-    <span>TikTok</span>
-  </a>
-</div>
-          </div>
-
-        </div>
-
-      </footer>
 
     </main>
   );
