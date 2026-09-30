@@ -119,17 +119,19 @@ export default function ShopPage() {
 
           <div className="relative overflow-hidden rounded-[2rem] bg-[#E1DCD4]">
 
-            <div className="flex h-[320px] items-center justify-center px-6 py-16 text-center">
+            <div className="flex min-h-[380px] items-center justify-center px-6 py-16 text-center">
 
               <div>
 
-                <p className="text-xs uppercase tracking-[0.4em] text-zinc-500">
+                <img
+                  src="/verone-logo.jpeg"
+                  alt="VERONE"
+                  className="mx-auto -translate-y-4 h-32 w-auto object-contain md:-translate-y-5 md:h-44"
+                />
+
+                <p className="mt-4 text-xs uppercase tracking-[0.4em] text-zinc-500">
                   Eyewear
                 </p>
-
-                <h2 className="mt-6 text-5xl font-medium tracking-[0.12em] md:text-7xl">
-                  VERONE
-                </h2>
 
                 <p className="mx-auto mt-5 max-w-sm text-sm leading-6 text-zinc-600">
                   Timeless eyewear, thoughtfully curated.

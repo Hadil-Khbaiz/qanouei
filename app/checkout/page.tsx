@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { supabase } from "../../lib/supabase";
 
 export default function CheckoutPage() {
   const { cart, cartTotal, isLoaded } = useCart();
@@ -20,69 +21,89 @@ export default function CheckoutPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const handleContinue = () => {
-    setError("");
-    setSuccess("");
+  useEffect(() => {
+  const loadUserEmail = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (!fullName.trim()) {
-      setError("Please enter your full name.");
-      return;
+    if (user?.email) {
+      setEmail(user.email);
     }
+  };
 
-    if (!phone.trim()) {
-      setError("Please enter your phone number.");
-      return;
-    }
+  loadUserEmail();
+}, []);
 
-    if (!/^[569][0-9]{7}$/.test(phone)) {
-      setError("Please enter a valid Kuwait mobile number.");
-      return;
-    }
+  const handleContinue = async () => {
+  setError("");
+  setSuccess("");
 
-    if (!email.trim()) {
-      setError("Please enter your email address.");
-      return;
-    }
+  if (!fullName.trim()) {
+    setError("Please enter your full name.");
+    return;
+  }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+  if (!phone.trim()) {
+    setError("Please enter your phone number.");
+    return;
+  }
 
-    if (!address.trim()) {
-      setError("Please enter your delivery address.");
-      return;
-    }
+  if (!/^[569][0-9]{7}$/.test(phone)) {
+    setError("Please enter a valid Kuwait mobile number.");
+    return;
+  }
 
-    const orderId = `QN-${new Date()
-      .toISOString()
-      .slice(0, 10)
-      .replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+  if (!email.trim()) {
+    setError("Please enter your email address.");
+    return;
+  }
 
-    const orderData = {
-      orderId,
-      customer: {
-        fullName: fullName.trim(),
-        phone: `+965${phone}`,
-        email: email.trim(),
-        address: address.trim(),
-        notes: notes.trim(),
-      },
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setError("Please enter a valid email address.");
+    return;
+  }
+
+  if (!address.trim()) {
+    setError("Please enter your delivery address.");
+    return;
+  }
+
+  // Get the currently signed-in customer
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    setError("Please sign in to your account before placing an order.");
+    return;
+  }
+
+  const { error: insertError } = await supabase
+    .from("orders")
+    .insert({
+      user_id: user.id,
+      customer_name: fullName.trim(),
+      phone: `+965${phone}`,
+      email: email.trim(),
+      address: address.trim(),
+      notes: notes.trim(),
       items: cart,
       total: cartTotal,
-      status: "pending_payment",
-      createdAt: new Date().toISOString(),
-    };
+      status: "pending",
+    });
 
-    localStorage.setItem(
-      "qanouei-pending-order",
-      JSON.stringify(orderData)
-    );
+  if (insertError) {
+    console.error(insertError);
+    setError(insertError.message);
+    return;
+  }
 
-    setSuccess(
-      `Your order ${orderId} is ready. Payment will be available soon.`
-    );
-  };
+  setSuccess(
+    "Your order has been received. Payment will be available soon."
+  );
+};
+  
 
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
