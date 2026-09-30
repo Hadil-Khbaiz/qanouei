@@ -1,0 +1,421 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Phone, Mail } from "lucide-react";
+import { useCart } from "../context/CartContext";
+
+export default function CheckoutPage() {
+  const { cart, cartTotal, isLoaded } = useCart();
+
+  useEffect(() => {
+  if (isLoaded && cart.length === 0) {
+    window.location.href = "/cart";
+  }
+}, [isLoaded, cart]);
+
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleContinue = () => {
+  setError("");
+  setSuccess("");
+
+  if (!fullName.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (!phone.trim()) {
+      setError("Please enter your phone number.");
+      return;
+    }
+
+    if (!/^[569][0-9]{7}$/.test(phone)) {
+      setError("Please enter a valid Kuwait mobile number.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+   if (!address.trim()) {
+  setError("Please enter your delivery address.");
+  return;
+}
+
+const orderId = `QN-${new Date()
+  .toISOString()
+  .slice(0, 10)
+  .replace(/-/g, "")}-${Math.floor(1000 + Math.random() * 9000)}`;
+
+const orderData = {
+  orderId,
+  customer: {
+    fullName: fullName.trim(),
+    phone: `+965${phone}`,
+    email: email.trim(),
+    address: address.trim(),
+    notes: notes.trim(),
+  },
+  items: cart,
+  total: cartTotal,
+  status: "pending_payment",
+  createdAt: new Date().toISOString(),
+};
+
+localStorage.setItem("qanouei-pending-order", JSON.stringify(orderData));
+
+setSuccess(
+  `Your order ${orderId} is ready. Payment will be available soon.`
+);
+
+  };
+
+  return (
+    <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
+
+      {/* Header */}
+      <header className="border-b border-black/10">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+
+          <a href="/" className="flex items-center gap-3">
+            <img
+              src="/logo.jpeg"
+              alt="QANOUEI"
+              className="h-10 w-auto object-contain"
+            />
+
+            <span className="text-lg font-semibold tracking-[0.22em]">
+              QANOUEI
+            </span>
+          </a>
+
+          <a
+            href="/cart"
+            className="text-xs uppercase tracking-[0.15em] transition-opacity hover:opacity-50"
+          >
+            ← Cart
+          </a>
+
+        </div>
+      </header>
+
+
+      {/* Checkout */}
+      <section className="mx-auto max-w-6xl px-6 pb-24 pt-14">
+
+        <div className="mb-12">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-zinc-500">
+            QANOUEI
+          </p>
+
+          <h1 className="mt-4 text-4xl font-light tracking-tight md:text-5xl">
+            Checkout
+          </h1>
+        </div>
+
+
+        <div className="grid gap-12 lg:grid-cols-[1fr_380px]">
+
+          {/* Customer Information */}
+          <div>
+
+            <div className="border-t border-black/10 pt-8">
+
+              <h2 className="text-xl font-medium">
+                Customer Information
+              </h2>
+
+              <div className="mt-8 space-y-6">
+
+                {/* Full Name */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Full Name
+                  </label>
+
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Your full name"
+                    className="w-full border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
+                  />
+                </div>
+
+
+                {/* Phone Number */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Phone Number
+                  </label>
+
+                  <div className="flex border border-black/15 bg-white focus-within:border-black">
+
+                    <div className="flex items-center border-r border-black/10 px-4 text-sm text-zinc-600">
+                      +965
+                    </div>
+
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={phone}
+                      placeholder="5XXXXXXX"
+                      maxLength={8}
+                      onChange={(e) => {
+                        const numbersOnly =
+                          e.target.value.replace(/\D/g, "");
+
+                        setPhone(numbersOnly);
+                      }}
+                      className="w-full px-4 py-4 text-sm outline-none"
+                    />
+
+                  </div>
+
+                  {phone.length > 0 && !/^[569][0-9]{7}$/.test(phone) && (
+  <p className="mt-2 text-xs text-red-500">
+    Enter 8 digits. Kuwait delivery only.
+  </p>
+)}
+                </div>
+
+
+                {/* Email */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Email
+                  </label>
+
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email address"
+                    className="w-full border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
+                  />
+                </div>
+
+
+                {/* Delivery Address */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Delivery Address
+                  </label>
+
+                  <textarea
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Your delivery address"
+                    rows={4}
+                    className="w-full resize-none border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
+                  />
+                </div>
+
+
+                {/* Order Notes */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Order Notes
+                  </label>
+
+                  <textarea
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Optional"
+                    rows={3}
+                    className="w-full resize-none border border-black/15 bg-white px-4 py-4 text-sm outline-none transition-colors focus:border-black"
+                  />
+                </div>
+
+
+                {/* Message */}
+                {error && (
+  <div className="border border-red-200 bg-red-50 px-4 py-4 text-sm text-red-600">
+    {error}
+  </div>
+)}
+
+{success && (
+  <div className="border border-green-200 bg-green-50 px-4 py-4 text-sm text-green-700">
+    {success}
+  </div>
+)}
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* Order Summary */}
+          <div className="h-fit border border-black/10 bg-white p-8">
+
+            <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
+              Your Order
+            </p>
+
+
+            <div className="mt-8 space-y-5">
+
+              {cart.map((item) => (
+
+                <div
+                  key={item.id}
+                  className="flex items-start justify-between gap-4"
+                >
+
+                  <div>
+                    <p className="text-sm font-medium">
+                      {item.name}
+                    </p>
+
+                    <p className="mt-1 text-xs text-zinc-500">
+                      Quantity: {item.quantity}
+                    </p>
+                  </div>
+
+                  <p className="text-sm">
+                    {(item.price * item.quantity).toFixed(3)} KD
+                  </p>
+
+                </div>
+
+              ))}
+
+            </div>
+
+
+            {/* Total */}
+            <div className="mt-8 flex items-center justify-between border-t border-black/10 pt-6">
+
+              <span className="text-sm">
+                Total
+              </span>
+
+              <span className="text-xl font-medium">
+                {cartTotal.toFixed(3)} KD
+              </span>
+
+            </div>
+
+
+            {/* Continue to Payment */}
+            <button
+              type="button"
+              onClick={handleContinue}
+              className="mt-8 w-full bg-[#171512] px-6 py-4 text-xs uppercase tracking-[0.25em] text-white transition-opacity hover:opacity-80"
+            >
+              Continue to Payment
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* Footer */}
+      <footer className="border-t border-black/10 px-6 py-12">
+
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+
+          <div>
+            <p className="text-lg font-semibold tracking-[0.25em]">
+              QANOUEI
+            </p>
+
+            <p className="mt-3 text-sm text-zinc-500">
+              Beauty, fashion & lifestyle.
+            </p>
+          </div>
+
+
+          <div className="flex flex-col gap-4 text-sm text-zinc-600">
+
+            {/* Phone Numbers */}
+            <div className="flex flex-col gap-3">
+
+              <a
+                href="tel:+96567711085"
+                className="flex items-center gap-3 transition-opacity hover:opacity-50"
+              >
+                <Phone size={16} strokeWidth={1.5} />
+                <span>+965 67711085</span>
+              </a>
+
+              <a
+                href="tel:+96565817656"
+                className="flex items-center gap-3 transition-opacity hover:opacity-50"
+              >
+                <Phone size={16} strokeWidth={1.5} />
+                <span>+965 65817656</span>
+              </a>
+
+            </div>
+
+
+            {/* Email */}
+            <a
+              href="mailto:Qanouei.g.t@gmail.com"
+              className="flex items-center gap-3 transition-opacity hover:opacity-50"
+            >
+              <Mail size={16} strokeWidth={1.5} />
+              <span>Qanouei.g.t@gmail.com</span>
+            </a>
+
+
+            {/* Social Media */}
+            <div className="mt-2 flex gap-6">
+
+              <a
+                href="https://www.instagram.com/luna.curl.kw?stkn=ZnZ1a3loeGo0eGFp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition-opacity hover:opacity-50"
+              >
+                <span className="text-base">◎</span>
+                <span>Instagram</span>
+              </a>
+
+              <a
+                href="https://www.tiktok.com/@luna.curl.kw?_r=1&_t=ZS-9A50VucmbvI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition-opacity hover:opacity-50"
+              >
+                <span className="text-base">♪</span>
+                <span>TikTok</span>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div className="mx-auto mt-10 max-w-7xl border-t border-black/10 pt-6 text-xs text-zinc-400">
+          © 2026 QANOUEI. All rights reserved.
+        </div>
+
+      </footer>
+
+    </main>
+  );
+}
