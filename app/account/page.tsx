@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { User, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { supabase } from "../../lib/supabase";
 
 type Order = {
@@ -12,6 +13,8 @@ type Order = {
   status: string;
   created_at: string;
 };
+
+const ADMIN_EMAIL = "qanouei.g.t@gmail.com";
 
 export default function AccountPage() {
   const [email, setEmail] = useState("");
@@ -151,6 +154,9 @@ export default function AccountPage() {
     setShowPassword(false);
     setShowConfirmPassword(false);
   };
+
+  const isAdmin =
+    user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
   return (
     <main className="min-h-screen bg-[#F8F5F0] text-[#171512]">
@@ -395,7 +401,7 @@ export default function AccountPage() {
             {/* Signed In */}
             <div className="border border-black/10 bg-white p-8 md:p-10">
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-6">
 
                 <div>
 
@@ -403,7 +409,7 @@ export default function AccountPage() {
                     Signed in as
                   </p>
 
-                  <p className="mt-2 text-lg">
+                  <p className="mt-2 break-all text-lg">
                     {user.email}
                   </p>
 
@@ -411,7 +417,7 @@ export default function AccountPage() {
 
                 <button
                   onClick={handleLogout}
-                  className="border border-black/20 px-5 py-3 text-xs uppercase tracking-[0.2em] transition-colors hover:bg-[#171512] hover:text-white"
+                  className="shrink-0 border border-black/20 px-5 py-3 text-xs uppercase tracking-[0.2em] transition-colors hover:bg-[#171512] hover:text-white"
                 >
                   Logout
                 </button>
@@ -419,6 +425,33 @@ export default function AccountPage() {
               </div>
 
             </div>
+
+            {/* Admin Dashboard */}
+            {isAdmin && (
+              <div className="mt-8 border border-black/10 bg-white p-8 md:p-10">
+
+                <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500">
+                  Administration
+                </p>
+
+                <h2 className="mt-3 text-xl font-medium">
+                  QANOUEI Dashboard
+                </h2>
+
+                <p className="mt-3 max-w-xl text-sm leading-7 text-zinc-500">
+                  Manage customer orders and view all orders placed through
+                  the QANOUEI website.
+                </p>
+
+                <Link
+                  href="/admin/orders"
+                  className="mt-6 inline-block bg-[#171512] px-6 py-4 text-xs uppercase tracking-[0.25em] text-white transition-opacity hover:opacity-80"
+                >
+                  View All Orders →
+                </Link>
+
+              </div>
+            )}
 
             {/* Orders */}
             <div className="mt-12 border border-black/10 bg-white p-8 md:p-10">
@@ -458,7 +491,7 @@ export default function AccountPage() {
                             Order
                           </p>
 
-                          <p className="mt-2 text-sm break-all">
+                          <p className="mt-2 break-all text-sm">
                             {order.id}
                           </p>
 
