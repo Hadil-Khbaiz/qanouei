@@ -41,6 +41,10 @@ export async function POST(request: Request) {
     } = await userClient.auth.getUser(accessToken);
 
     if (authError || !user) {
+      console.error("User authentication failed:", {
+        message: authError?.message,
+      });
+
       return NextResponse.json(
         { error: "Your session is invalid. Please sign in again." },
         { status: 401 }
@@ -65,13 +69,36 @@ export async function POST(request: Request) {
     const { data: order, error: orderError } = await admin
       .from("orders")
       .select("id, user_id, total, status, myfatoorah_invoice_id")
-      .eq("id", orderId)
+      .eq("id", orderId.trim())
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
-    if (orderError || !order) {
+    // Log the actual database error instead of labeling every failure
+    // as "Order not found."
+    if (orderError) {
+      console.error("Order lookup failed:", {
+        code: orderError.code,
+        message: orderError.message,
+        details: orderError.details,
+        hint: orderError.hint,
+        orderId: orderId.trim(),
+        userId: user.id,
+      });
+
       return NextResponse.json(
-        { error: "Order not found." },
+        { error: "Could not look up the order. Check server logs." },
+        { status: 500 }
+      );
+    }
+
+    if (!order) {
+      console.error("Order lookup returned no matching row:", {
+        orderId: orderId.trim(),
+        userId: user.id,
+      });
+
+      return NextResponse.json(
+        { error: "No matching order was found." },
         { status: 404 }
       );
     }
@@ -137,9 +164,7 @@ export async function POST(request: Request) {
     const invoiceId = result.Data.InvoiceId;
 
     if (invoiceId == null) {
-      console.error(
-        "MyFatoorah response did not include an InvoiceId."
-      );
+      console.error("MyFatoorah response did not include an InvoiceId.");
 
       return NextResponse.json(
         {
