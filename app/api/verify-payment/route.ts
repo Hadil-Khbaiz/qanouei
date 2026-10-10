@@ -1,4 +1,5 @@
-﻿import { createClient } from "@supabase/supabase-js";
+﻿
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -30,9 +31,11 @@ export async function POST(request: Request) {
       );
     }
 
+    const requestedPaymentId = String(paymentId).trim();
+
     const response = await fetch(
       `https://apitest.myfatoorah.com/v3/payments/${encodeURIComponent(
-        String(paymentId)
+        requestedPaymentId
       )}`,
       {
         method: "GET",
@@ -45,25 +48,6 @@ export async function POST(request: Request) {
     );
 
     const result = await response.json();
-
-    // Temporary diagnostic: log field names only, never payment values.
-    console.log("MyFatoorah response structure:", {
-      isSuccess: result?.IsSuccess,
-      dataKeys:
-        result?.Data && typeof result.Data === "object"
-          ? Object.keys(result.Data)
-          : [],
-      invoiceKeys:
-        result?.Data?.Invoice &&
-        typeof result.Data.Invoice === "object"
-          ? Object.keys(result.Data.Invoice)
-          : [],
-      amountKeys:
-        result?.Data?.Amount &&
-        typeof result.Data.Amount === "object"
-          ? Object.keys(result.Data.Amount)
-          : [],
-    });
 
     if (!response.ok || !result?.IsSuccess || !result?.Data) {
       console.error("MyFatoorah verification failed:", {
@@ -78,25 +62,33 @@ export async function POST(request: Request) {
     }
 
     const data = result.Data;
+    const invoice = data?.Invoice;
+    const transaction = data?.Transaction;
+    const amount = data?.Amount;
 
-    const invoiceStatus = String(
-      data?.Invoice?.Status ??
-        data?.InvoiceStatus ??
-        data?.Status ??
-        ""
-    ).toUpperCase();
-
-    if (invoiceStatus !== "PAID") {
-      return NextResponse.json({
-        paid: false,
-        error: "Payment has not been confirmed as paid.",
-      });
+    // Require a paid invoice and a successful transaction.
+    if (
+      String(invoice?.Status ?? "").toUpperCase() !== "PAID" ||
+      String(transaction?.Status ?? "").toUpperCase() !== "SUCCESS"
+    ) {
+      return NextResponse.json(
+        {
+          paid: false,
+          error: "Payment has not been confirmed as successful.",
+        },
+        { status: 409 }
+      );
     }
 
-    const invoiceId =
-      data?.Invoice?.Id ??
-      data?.Invoice?.InvoiceId ??
-      data?.InvoiceId;
+    // Ensure the returned transaction matches the requested payment.
+    if (String(transaction?.PaymentId ?? "") !== requestedPaymentId) {
+      return NextResponse.json(
+        { error: "The payment reference does not match." },
+        { status: 409 }
+      );
+    }
+
+    const invoiceId = invoice?.Id;
 
     if (invoiceId == null) {
       return NextResponse.json(
@@ -134,29 +126,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const amountData = data?.Amount;
-
-    const paidCurrency =
-      amountData?.PayCurrency ??
-      amountData?.DisplayCurrency ??
-      amountData?.BaseCurrency;
-
-    if (paidCurrency !== "KWD") {
+    if (amount?.PayCurrency !== "KWD") {
       return NextResponse.json(
         { error: "The payment currency does not match the order." },
         { status: 409 }
       );
     }
 
-    const paidAmount = Number(
-      amountData?.ValueInPayCurrency ??
-        amountData?.ValueInDisplayCurrency ??
-        amountData?.ValueInBaseCurrency
-    );
+    const paidAmount = Number(amount?.ValueInPayCurrency);
+    const orderTotal = Number(order.total);
 
     if (
       !Number.isFinite(paidAmount) ||
-      Math.abs(paidAmount - Number(order.total)) > 0.001
+      !Number.isFinite(orderTotal) ||
+      Math.abs(paidAmount - orderTotal) > 0.001
     ) {
       return NextResponse.json(
         { error: "The payment amount does not match the order." },
@@ -164,6 +147,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // Safe to return success for an already-paid, verified order.
     if (order.status === "paid") {
       return NextResponse.json({ paid: true });
     }
@@ -190,23 +174,18 @@ export async function POST(request: Request) {
       );
 
       return NextResponse.json(
-        {
-          error:
-            "Payment was verified, but the order could not be updated.",
-        },
+        { error: "Payment was verified, but the order could not be updated." },
         { status: 500 }
       );
     }
 
     if (!updatedOrder) {
-      const {
-        data: latestOrder,
-        error: latestOrderError,
-      } = await admin
-        .from("orders")
-        .select("status")
-        .eq("id", order.id)
-        .maybeSingle();
+      const { data: latestOrder, error: latestOrderError } =
+        await admin
+          .from("orders")
+          .select("status")
+          .eq("id", order.id)
+          .maybeSingle();
 
       if (latestOrderError) {
         return NextResponse.json(
