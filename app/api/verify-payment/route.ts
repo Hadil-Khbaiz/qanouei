@@ -1,4 +1,5 @@
-﻿import { createClient } from "@supabase/supabase-js";
+﻿
+import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -16,11 +17,13 @@ export async function POST(request: Request) {
       );
     }
 
+    // Read and validate the payment reference.
     const body = await request.json();
     const paymentId = body?.paymentId;
 
     if (
-      (typeof paymentId !== "string" && typeof paymentId !== "number") ||
+      (typeof paymentId !== "string" &&
+        typeof paymentId !== "number") ||
       !String(paymentId).trim()
     ) {
       return NextResponse.json(
@@ -29,6 +32,7 @@ export async function POST(request: Request) {
       );
     }
 
+    // Verify the payment directly with MyFatoorah.
     const response = await fetch(
       `https://apitest.myfatoorah.com/v3/payments/${encodeURIComponent(
         String(paymentId)
@@ -45,7 +49,7 @@ export async function POST(request: Request) {
 
     const result = await response.json();
 
-    if (!response.ok || !result?.IsSuccess) {
+    if (!response.ok || !result?.IsSuccess || !result?.Data) {
       console.error("MyFatoorah verification failed:", {
         status: response.status,
         message: result?.Message,
@@ -58,8 +62,13 @@ export async function POST(request: Request) {
     }
 
     const data = result.Data;
+
+    // Only accept a confirmed paid invoice.
     const invoiceStatus = String(
-      data?.Invoice?.Status ?? data?.InvoiceStatus ?? data?.Status ?? ""
+      data?.Invoice?.Status ??
+        data?.InvoiceStatus ??
+        data?.Status ??
+        ""
     ).toUpperCase();
 
     if (invoiceStatus !== "PAID") {
@@ -69,12 +78,11 @@ export async function POST(request: Request) {
       });
     }
 
-    // Do not mark any order as paid until the returned invoice
-    // is matched to the correct order and amount.
+    // Find the invoice ID returned by MyFatoorah.
     const invoiceId =
-     data?.Invoice?.Id ??
-     data?.Invoice?.InvoiceId ??
-     data?.InvoiceId;
+      data?.Invoice?.Id ??
+      data?.Invoice?.InvoiceId ??
+      data?.InvoiceId;
 
     if (invoiceId == null) {
       return NextResponse.json(
@@ -84,41 +92,56 @@ export async function POST(request: Request) {
     }
 
     const admin = createClient(supabaseUrl, secretKey, {
-      auth: { persistSession: false, autoRefreshToken: false },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
     });
 
+    // Match the verified invoice to the order created at checkout.
     const { data: order, error: orderError } = await admin
       .from("orders")
       .select("id, total, status, myfatoorah_invoice_id")
       .eq("myfatoorah_invoice_id", String(invoiceId))
       .maybeSingle();
 
-    if (orderError || !order) {
+    if (orderError) {
+      console.error("Order lookup failed:", orderError.message);
+
+      return NextResponse.json(
+        { error: "Could not look up the order." },
+        { status: 500 }
+      );
+    }
+
+    if (!order) {
       return NextResponse.json(
         { error: "We could not match this payment to an order." },
         { status: 404 }
       );
     }
 
+    // Validate the currency returned by MyFatoorah.
     const amountData = data?.Amount;
 
-const paidCurrency =
-  amountData?.PayCurrency ??
-  amountData?.DisplayCurrency ??
-  amountData?.BaseCurrency;
+    const paidCurrency =
+      amountData?.PayCurrency ??
+      amountData?.DisplayCurrency ??
+      amountData?.BaseCurrency;
 
-if (paidCurrency !== "KWD") {
-  return NextResponse.json(
-    { error: "The payment currency does not match the order." },
-    { status: 409 }
-  );
-}
+    if (paidCurrency !== "KWD") {
+      return NextResponse.json(
+        { error: "The payment currency does not match the order." },
+        { status: 409 }
+      );
+    }
 
-const paidAmount = Number(
-  amountData?.ValueInPayCurrency ??
-  amountData?.ValueInDisplayCurrency ??
-  amountData?.ValueInBaseCurrency
-);
+    // Validate the paid amount against the stored order total.
+    const paidAmount = Number(
+      amountData?.ValueInPayCurrency ??
+        amountData?.ValueInDisplayCurrency ??
+        amountData?.ValueInBaseCurrency
+    );
 
     if (
       !Number.isFinite(paidAmount) ||
@@ -130,6 +153,7 @@ const paidAmount = Number(
       );
     }
 
+    // Idempotency: an already-paid order remains paid.
     if (order.status === "paid") {
       return NextResponse.json({ paid: true });
     }
@@ -141,17 +165,53 @@ const paidAmount = Number(
       );
     }
 
-    const { error: updateError } = await admin
+    // Update only a pending order and return the updated row.
+    const { data: updatedOrder, error: updateError } = await admin
       .from("orders")
       .update({ status: "paid" })
       .eq("id", order.id)
-      .eq("status", "pending");
+      .eq("status", "pending")
+      .select("id, status")
+      .maybeSingle();
 
     if (updateError) {
-      console.error("Could not update paid order:", updateError.message);
+      console.error(
+        "Could not update paid order:",
+        updateError.message
+      );
+
       return NextResponse.json(
-        { error: "Payment was verified, but the order could not be updated." },
+        {
+          error:
+            "Payment was verified, but the order could not be updated.",
+        },
         { status: 500 }
+      );
+    }
+
+    // Another request may have updated the order concurrently.
+    if (!updatedOrder) {
+      const { data: latestOrder, error: latestOrderError } =
+        await admin
+          .from("orders")
+          .select("status")
+          .eq("id", order.id)
+          .maybeSingle();
+
+      if (latestOrderError) {
+        return NextResponse.json(
+          { error: "Could not confirm the final order status." },
+          { status: 500 }
+        );
+      }
+
+      if (latestOrder?.status === "paid") {
+        return NextResponse.json({ paid: true });
+      }
+
+      return NextResponse.json(
+        { error: "The order status could not be updated." },
+        { status: 409 }
       );
     }
 
