@@ -1,5 +1,4 @@
-﻿
-import { createClient } from "@supabase/supabase-js";
+﻿import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
@@ -17,7 +16,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Read and validate the payment reference.
     const body = await request.json();
     const paymentId = body?.paymentId;
 
@@ -32,7 +30,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify the payment directly with MyFatoorah.
     const response = await fetch(
       `https://apitest.myfatoorah.com/v3/payments/${encodeURIComponent(
         String(paymentId)
@@ -49,6 +46,25 @@ export async function POST(request: Request) {
 
     const result = await response.json();
 
+    // Temporary diagnostic: log field names only, never payment values.
+    console.log("MyFatoorah response structure:", {
+      isSuccess: result?.IsSuccess,
+      dataKeys:
+        result?.Data && typeof result.Data === "object"
+          ? Object.keys(result.Data)
+          : [],
+      invoiceKeys:
+        result?.Data?.Invoice &&
+        typeof result.Data.Invoice === "object"
+          ? Object.keys(result.Data.Invoice)
+          : [],
+      amountKeys:
+        result?.Data?.Amount &&
+        typeof result.Data.Amount === "object"
+          ? Object.keys(result.Data.Amount)
+          : [],
+    });
+
     if (!response.ok || !result?.IsSuccess || !result?.Data) {
       console.error("MyFatoorah verification failed:", {
         status: response.status,
@@ -63,7 +79,6 @@ export async function POST(request: Request) {
 
     const data = result.Data;
 
-    // Only accept a confirmed paid invoice.
     const invoiceStatus = String(
       data?.Invoice?.Status ??
         data?.InvoiceStatus ??
@@ -78,7 +93,6 @@ export async function POST(request: Request) {
       });
     }
 
-    // Find the invoice ID returned by MyFatoorah.
     const invoiceId =
       data?.Invoice?.Id ??
       data?.Invoice?.InvoiceId ??
@@ -98,7 +112,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // Match the verified invoice to the order created at checkout.
     const { data: order, error: orderError } = await admin
       .from("orders")
       .select("id, total, status, myfatoorah_invoice_id")
@@ -121,7 +134,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate the currency returned by MyFatoorah.
     const amountData = data?.Amount;
 
     const paidCurrency =
@@ -136,7 +148,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate the paid amount against the stored order total.
     const paidAmount = Number(
       amountData?.ValueInPayCurrency ??
         amountData?.ValueInDisplayCurrency ??
@@ -153,7 +164,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Idempotency: an already-paid order remains paid.
     if (order.status === "paid") {
       return NextResponse.json({ paid: true });
     }
@@ -165,7 +175,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Update only a pending order and return the updated row.
     const { data: updatedOrder, error: updateError } = await admin
       .from("orders")
       .update({ status: "paid" })
@@ -189,14 +198,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Another request may have updated the order concurrently.
     if (!updatedOrder) {
-      const { data: latestOrder, error: latestOrderError } =
-        await admin
-          .from("orders")
-          .select("status")
-          .eq("id", order.id)
-          .maybeSingle();
+      const {
+        data: latestOrder,
+        error: latestOrderError,
+      } = await admin
+        .from("orders")
+        .select("status")
+        .eq("id", order.id)
+        .maybeSingle();
 
       if (latestOrderError) {
         return NextResponse.json(
